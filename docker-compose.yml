@@ -1,0 +1,28 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - /srv/monitoring/prometheus/data:/prometheus
+      - /srv/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=graf2ana
+      - GF_PATHS_DATA=/var/lib/grafana
+      - GF_PATHS_CONFIG=/etc/grafana
+    volumes:
+      - /srv/monitoring/grafana/data:/var/lib/grafana
+      - /srv/monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
