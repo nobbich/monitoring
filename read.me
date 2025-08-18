@@ -1,0 +1,9 @@
+Ein docker-compose.yml, das Prometheus und Grafana unter Linux startet. Alles wird unter /srv/monitoring/ persistent gespeichert. 
+Ausserdem wird für Grafana der erste Admin-User gesetzt (admin / graf2ana).
+
+Ordnerrechte:
+Unter Linux sicherstellen, dass /srv/monitoring/ von Docker beschrieben werden darf
+
+sudo mkdir -p /srv/monitoring/prometheus /srv/monitoring/grafana/data
+sudo chown -R 472:472 /srv/monitoring/grafana/data
+sudo chown -R 100:100 /srv/monitoring/prometheus/data
