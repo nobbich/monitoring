@@ -4,6 +4,7 @@ Ausserdem wird für Grafana der erste Admin-User gesetzt (admin / graf2ana).
 Ordnerrechte:
 Unter Linux sicherstellen, dass /srv/monitoring/ von Docker beschrieben werden darf
 
-sudo mkdir -p /srv/monitoring/prometheus /srv/monitoring/grafana/data
+sudo mkdir -p /srv/monitoring/prometheus /srv/monitoring/grafana/data /srv/monitoring/blackbox
 sudo chown -R 472:472 /srv/monitoring/grafana/data
 sudo chown -R 100:100 /srv/monitoring/prometheus/data
+sudo chown -R 1000:1000 /srv/monitoring/blackbox
