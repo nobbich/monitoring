@@ -9,10 +9,26 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   # Blackbox Exporter
-  - job_name: 'blackbox'
+  - job_name: 'blackbox_ping'
     metrics_path: /probe
     params:
-      module: [http_2xx]  # definiert im blackbox.yml (z. B. HTTP 200 erwartet)
+      module: [icmp_ping]
+    static_configs:
+      - targets:
+          - 8.8.8.8
+          - 1.1.1.1
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
+
+  - job_name: 'blackbox_http_2xx'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
     static_configs:
       - targets:
           - https://example.com
@@ -23,7 +39,22 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: blackbox:9115   # Containername und Port vom Blackbox Exporter
+        replacement: blackbox:9115
+
+  - job_name: 'blackbox_http_content'
+    metrics_path: /probe
+    params:
+      module: [http_content_match]
+    static_configs:
+      - targets:
+          - https://meineseite.local
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
 
   # Node Exporter (Linux Host oder VM)
   - job_name: 'node_exporter'
