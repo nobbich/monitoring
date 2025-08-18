@@ -26,3 +26,14 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
+
+  blackbox:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox
+    volumes:
+      - /srv/monitoring/blackbox:/config
+    command:
+      - '--config.file=/config/blackbox.yml'
+    ports:
+      - "9115:9115"
+    restart: unless-stopped
