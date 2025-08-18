@@ -8,3 +8,13 @@ sudo mkdir -p /srv/monitoring/prometheus /srv/monitoring/grafana/data /srv/monit
 sudo chown -R 472:472 /srv/monitoring/grafana/data
 sudo chown -R 100:100 /srv/monitoring/prometheus/data
 sudo chown -R 1000:1000 /srv/monitoring/blackbox
+
+
+node-exporter:
+docker run -d --net="host" --name=node_exporter prom/node-exporter
+
+windows-exporter:
+https://github.com/prometheus-community/windows_exporter/releases
+
+
+
